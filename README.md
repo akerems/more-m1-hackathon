@@ -65,7 +65,7 @@ MORE is a provably fair, on-chain mining game featuring a unique **dual motherlo
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/MORE.git
+   git clone https://github.com/akerems/MORE.git
    cd MORE
    ```
 
@@ -168,12 +168,6 @@ To deploy your own instance:
 - Built for Movement Network Hackathon
 - Inspired by on-chain gaming mechanics
 - Powered by Move 2.0 and Privy authentication
-
-## 📧 Contact
-
-For questions or feedback, open an issue or reach out via [your contact method]
-
----
 
 **⚠️ Disclaimer:** This is experimental software built for educational and hackathon purposes. Use at your own risk. No warranties provided.
 
