@@ -1,173 +1,164 @@
-# 🎮 MORE - Decentralized Mining Game
+# MORE Frontend
 
-![Movement Network](https://img.shields.io/badge/Movement-Network-FDB71A?style=for-the-badge)
-![Move 2.0](https://img.shields.io/badge/Move-2.0-orange?style=for-the-badge)
-![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)
+Movement On-chain Reserve Experiment - A fair-launch mining game on Movement Network.
 
-> ⚠️ **Experimental Project** - Built for hackathon. Smart contracts are not audited. Use at your own risk.
+## Features
 
-MORE is a provably fair, on-chain mining game featuring a unique **dual motherlode jackpot system** powered by Move 2.0 smart contracts on Movement Network. Players deploy tokens to a 5x5 grid each round, competing for jackpots in both MORE and MOVE tokens.
+- 🎮 **5×5 Grid Mining**: Deploy MOVE tokens on a competitive square grid
+- 💎 **Dual Motherlode**: Win both MORE tokens and MOVE in jackpots
+- ⚡ **Real-time UI**: Live countdown, block selection, and stats
+- 🎨 **Modern Design**: Movement-inspired dark-yellow theme
+- 📱 **Responsive**: Works on desktop, tablet, and mobile
+- 📄 **Complete Pages**: Mine, Stake, Community, Discover, and About
+- 👛 **Dual Wallet System**: Privy social login + Native Aptos wallets (Nightly, Martian, etc.)
 
-## ✨ Features
-
-### 🎰 Dual Motherlode System
-- Win jackpots in **MORE tokens** (game token) and **MOVE tokens** (native)
-- 1 in 625 chance per round with VRF-based provably fair selection
-- Real-time jackpot tracking and countdown timer
-
-### 🤖 On-chain Automation
-- Stake MOVE tokens for automated deployment
-- Keeper network executes your strategy 24/7
-- Multiple strategies: Random (5 blocks) or All Blocks (25)
-- Top-up stake anytime or disable automation
-
-### 🔐 Seamless Authentication
-- **Social login** via Privy (Google, Twitter, Discord, GitHub)
-- **Embedded wallets** created automatically
-- **Native wallet support** (Petra, Martian, Pontem, etc.)
-- No seed phrases required for new users
-
-### ⚡ Provably Fair
-- VRF-based randomness for transparent gameplay
-- All game logic executed on-chain
-- Immutable rules enforced by Move 2.0 smart contracts
-
-## 🛠️ Tech Stack
-
-### Smart Contracts
-- **Language:** Move 2.0
-- **Network:** Movement Network Testnet (Chain ID: 250)
-- **Modules:**
-  - `more_token.move` - Fungible asset (MORE token)
-  - `game_state.move` - Core mining game logic
-  - `motherlode.move` - Dual jackpot system
-  - `staking.move` - Time-locked staking with APY
-  - `referral.move` - 3-tier referral rewards
-  - `automation.move` - On-chain keeper system
-
-### Frontend
-- **Framework:** Next.js 14 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **Wallet Integration:** Privy + Aptos Wallet Adapter
-- **Blockchain SDK:** Aptos TS SDK v5.1.5
-- **UI Components:** Custom components with Lucide icons
-- **Notifications:** Sonner (toast notifications)
-
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+ and npm/yarn
-- Git
+
+- Node.js 18+ 
+- npm or yarn
+- Privy App ID (get from [console.privy.io](https://console.privy.io/))
+  - **Note**: You only need the App ID - no custom chain configuration required!
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/akerems/MORE.git
-   cd MORE
-   ```
+```bash
+# Install dependencies
+npm install
 
-2. **Install frontend dependencies**
-   ```bash
-   cd more-frontend
-   npm install
-   ```
+# Create environment file and add your Privy App ID
+echo "NEXT_PUBLIC_PRIVY_APP_ID=your_app_id_here" > .env.local
 
-3. **Set up environment variables**
-   
-   Create a `.env.local` file in the `more-frontend` directory:
-   ```env
-   NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
-   ```
-   
-   > 🔑 Get your Privy App ID from [Privy Dashboard](https://dashboard.privy.io)
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📁 Project Structure
-
-```
-MORE/
-├── more-frontend/           # Next.js frontend application
-│   ├── app/                # App router pages
-│   ├── components/         # React components
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utilities and configs
-│   └── public/             # Static assets
-│
-└── more-move/              # Move 2.0 smart contracts
-    ├── sources/            # Move modules
-    │   ├── more_token.move
-    │   ├── game_state.move
-    │   ├── motherlode.move
-    │   ├── staking.move
-    │   ├── referral.move
-    │   └── automation.move
-    └── Move.toml           # Package manifest
+# Run development server
+npm run dev
 ```
 
-## 🎮 How to Play
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-1. **Connect your wallet** using social login or native wallet
-2. **Get test MOVE tokens** from the faucet (linked in wallet dropdown)
-3. **Select blocks** on the 5x5 grid (or use "All" for maximum chances)
-4. **Set deployment amount** per block
-5. **Deploy** and wait for the round to complete
-6. **Win the Motherlode** if your block is selected! (1 in 625 chance)
+**📖 See [SETUP_UPDATED.md](./SETUP_UPDATED.md) for the complete setup guide.**
 
-### Auto-Deploy Mode
+### Build for Production
 
-1. Switch to **Auto** tab in the Deploy Panel
-2. **Stake MOVE tokens** (minimum 10 MOVE)
-3. **Choose strategy:**
-   - **Random:** Deploy to 5 random blocks per round
-   - **All Blocks:** Deploy to all 25 blocks per round
-4. **Enable automation** - Keepers will execute your deployments 24/7
-5. **Top-up** your stake anytime or disable when done
+```bash
+npm run build
+npm start
+```
 
-## 🌐 Movement Network Details
+## Project Structure
 
-- **Testnet RPC:** `https://testnet.movementnetwork.xyz/v1`
-- **Chain ID:** 250
-- **Explorer:** [https://explorer.movementnetwork.xyz](https://explorer.movementnetwork.xyz)
-- **Faucet:** [https://faucet.movementnetwork.xyz](https://faucet.movementnetwork.xyz)
+```
+more-frontend/
+├── app/
+│   ├── page.tsx                # Main game/mine page
+│   ├── about/page.tsx          # About page
+│   ├── stake/page.tsx          # Staking page
+│   ├── community/page.tsx      # Community links
+│   ├── discover/page.tsx       # Stats & leaderboard
+│   ├── providers.tsx           # App providers (Privy + Wallets)
+│   ├── layout.tsx              # Root layout
+│   └── globals.css             # Global styles
+├── components/
+│   ├── Header.tsx              # Navigation header
+│   ├── WalletButton.tsx        # Wallet connection UI with dropdown
+│   ├── WalletSelectionModal.tsx # Dual wallet selection modal
+│   ├── WalletProvider.tsx      # Aptos wallet adapter provider
+│   ├── MiningGrid.tsx          # 5×5 game grid
+│   ├── GridBlock.tsx           # Square grid block
+│   ├── MotherlodeDisplay.tsx   # Jackpot display
+│   └── DeployPanel.tsx         # Deploy controls
+├── lib/
+│   ├── aptos.ts                # Aptos SDK config & Movement network
+│   ├── privy-movement.ts       # Movement wallet utilities
+│   └── transactions.ts         # Transaction submission helpers
+├── hooks/
+│   └── useBalance.ts           # Hook for fetching MOVE balance
+└── public/                     # Static assets
+```
 
-## 📝 Smart Contract Deployment
+## Key Components
 
-> Note: Contracts are currently deployed on Movement Testnet. Addresses will be updated after deployment.
+### MiningGrid
+Displays the 5×5 grid of blocks. Users can select blocks to deploy MOVE tokens.
 
-To deploy your own instance:
+### MotherlodeDisplay
+Shows the dual jackpot pools (MORE + MOVE) and countdown timer.
 
-1. Install Movement CLI (optional - can also use Aptos CLI)
-2. Navigate to `more-move` directory
-3. Update `Move.toml` with your address
-4. Deploy modules in order:
-   ```bash
-   aptos move publish --network custom --node-url https://testnet.movementnetwork.xyz/v1
-   ```
+### DeployPanel
+Controls for deployment amount, block selection, and transaction submission.
 
-## 🔒 Security Notes
+## Customization
 
-⚠️ **This is an experimental hackathon project:**
-- Smart contracts are **NOT audited**
-- Use only with **testnet tokens**
-- Do **NOT** use in production
-- No guarantees of security or correctness
+### Colors
+The theme uses Movement-inspired dark-yellow palette. Edit `tailwind.config.ts`:
 
-## 🙏 Acknowledgments
+```typescript
+colors: {
+  primary: {
+    DEFAULT: "#FDB71A",    // Movement yellow
+    hover: "#e5a617",
+  },
+  accent: {
+    yellow: "#FDB71A",     // Main brand color
+    orange: "#ff8c00",
+    gold: "#ffd700",
+    darkYellow: "#e5a617",
+  },
+}
+```
 
-- Built for Movement Network Hackathon
-- Inspired by on-chain gaming mechanics
-- Powered by Move 2.0 and Privy authentication
+### Constants
+Game constants can be adjusted in the component files or centralized in a `constants.ts` file.
 
-**⚠️ Disclaimer:** This is experimental software built for educational and hackathon purposes. Use at your own risk. No warranties provided.
+## Wallet Integration
+
+This app uses a **dual-wallet system** based on production-ready patterns:
+
+### Wallet Options
+
+#### 🔐 Privy Social Login
+- Email, Twitter, Google, GitHub, Discord
+- Automatic Movement wallet creation
+- No extension needed
+- Perfect for new users
+
+#### 💼 Native Aptos Wallets
+- Nightly (recommended)
+- Martian
+- Other Aptos-compatible wallets
+- Direct blockchain access
+- For advanced users
+
+### Features
+- ✅ Dual wallet support (Privy + Native)
+- ✅ Movement Testnet (Chain ID: 250) auto-configured
+- ✅ Wallet dropdown with copy, explorer, faucet links
+- ✅ Real-time MOVE balance fetching
+- ✅ Transaction signing for both wallet types
+- ✅ Toast notifications (Sonner)
+
+### Quick Start
+1. Get your Privy App ID from [console.privy.io](https://console.privy.io/)
+2. Add to `.env.local`: `NEXT_PUBLIC_PRIVY_APP_ID=your_app_id`
+3. Run `npm run dev` and click "Connect Wallet"
+4. Choose Privy or Native wallet
+
+**📖 Complete Guide**: [WALLET_INTEGRATION.md](./WALLET_INTEGRATION.md)  
+**📘 Setup**: [SETUP_UPDATED.md](./SETUP_UPDATED.md)  
+**🔄 Migration**: [MIGRATION.md](./MIGRATION.md)
+
+## Technologies
+
+- **Next.js 14**: React framework with App Router
+- **TypeScript**: Type safety
+- **Tailwind CSS**: Utility-first styling
+- **Lucide React**: Beautiful icons
+- **Privy**: Social login & embedded wallets
+- **Aptos SDK**: Movement Network blockchain interactions
+- **Aptos Wallet Adapter**: Native wallet integration
+- **Sonner**: Toast notifications
+
+## License
+
+MIT
 
