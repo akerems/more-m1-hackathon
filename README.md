@@ -1,118 +1,117 @@
-   # 🎮 MORE - Decentralized Mining Game
+# 🎮 MORE - Decentralized Mining Game
 
-   ![Movement Network](https://img.shields.io/badge/Movement-Network-FDB71A?style=for-the-badge)
-   ![Move 2.0](https://img.shields.io/badge/Move-2.0-orange?style=for-the-badge)
-   ![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
-   ![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)
-
-> ## ⚠️ **IMPORTANT DISCLAIMERS**
-> 
-> **Frontend Prototype Notice:**
-> - This is currently a **frontend prototype** with mock data
-> - All numbers, statistics, and activity shown on screen are **placeholder values**
-> - **NO real blockchain data** is currently integrated
-> - Smart contracts are **designed but not yet developed**
-> - Wallet connections work but transactions are **not executing on-chain**
+![Movement Network](https://img.shields.io/badge/Movement-Network-FDB71A?style=for-the-badge)
+![Move 2.0](https://img.shields.io/badge/Move-2.0-orange?style=for-the-badge)
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)
+![Live on Testnet](https://img.shields.io/badge/Live-Testnet-green?style=for-the-badge)
 > 
 > **Experimental Hackathon Project:**
-> - Built for Movement Network Hackathon
-> - Smart contracts will **NOT be audited** initially
-> - Use only with **testnet tokens** once deployed
+> - Built for Movement Network Hackathon - **some features incomplete due to time constraints**
+> - Modules are **NOT audited**
+> - Use only with **testnet tokens**
 > - Do **NOT** use in production
 > - No guarantees of security or correctness
+> 
+> **Testnet Limitations & Incomplete Features:**
+> - Buyback & burn mechanism **not implemented** (requires DEX/token pool on testnet)
+> - Auto-deploy feature **removed due to bugs** - could not be completed in hackathon timeline
+> - Motherlode jackpot tracking exists but not active
+> - Some features may be experimental or incomplete
+> - Testnet may be reset periodically
+>
+> **✅ What Works:** Manual deployment, grid competition, reward distribution, wallet integration
 
-   MORE is an experimental on-chain mining game built on Movement Network. Players compete on a 5x5 grid to earn MOVE tokens from grid wins and MORE tokens from the Motherlode jackpot, while protocol fees fuel continuous buyback & burn of MORE tokens - aligning long-term holders with on-chain activity growth.
+MORE is a live on-chain mining game built on Movement Network. Players compete on a 5x5 grid by deploying MOVE tokens to win rewards. The game combines strategic block selection with provably fair randomness to create an engaging competitive experience.
 
-   ## 🎯 Core Concept
+## 🎯 Core Concept
 
-   ### Two Ways to Win:
+Deploy MOVE tokens to blocks on a 5x5 grid (25 blocks total). At the end of each 60-second round, the smart contract determines winning blocks, and players who deployed to those blocks share the rewards proportionally.
 
-   1. **🎰 Motherlode Jackpot (1 in 625)** → Win **MORE** tokens
-      - Shared jackpot pool grows every round
-      - 60% to winners, 20% to all miners, 15% buyback & burn, 5% rollover
+### 🎲 How It Works:
 
-   2. **⚡ Grid Wins** → Win **MOVE** tokens
-      - Deploy to blocks and win from block pool
-      - 85% to winners, 15% protocol fee → buyback & burn
+1. **Deploy to Blocks** → Choose 1-25 blocks and deploy MOVE tokens
+2. **Wait for Round End** → 60-second rounds with live countdown
+3. **Win Rewards** → Winning blocks split the reward pool
+4. **Repeat** → New round starts automatically
 
-   ### 🔥 Buyback & Burn Mechanism
-   Protocol fees from both systems are used to continuously buyback MORE tokens from the market and burn them, creating deflationary pressure that aligns holders with the protocol's growth.
+### 💰 Reward Distribution (Per Round):
+- **85%** → Winning block miners (proportional to deployment)
+- **10%** → Vault (protocol treasury)
+- **5%** → Motherlode pool (future feature)
 
-   ## ✨ Features
+## ive Features
 
-### 🎰 Single Motherlode System (Planned)
-- **MORE token jackpot** triggered at 1 in 625 chance
-- VRF-based provably fair selection
-- Real-time jackpot tracking and countdown timer
-- Shared pool grows with each round
+### Grid Mining
+- **5x5 grid** (25 blocks) with real-time deployment tracking
+- **60-second rounds** with live countdown timer
+- **Multiple winners** per round (5 winning blocks typically)
+- **Proportional rewards** based on deployment amounts
+- **Visual feedback** with heatmap and winning block highlights
+- **Block statistics** showing deployed amounts and miner counts
 
-### ⚡ Grid Mining (Planned)
-- **5x5 grid** with multiple winning blocks per round
-- Deploy MOVE tokens to compete
-- Win proportional MOVE rewards from winning blocks
-- Select specific blocks or deploy to all
+### Strategic Gameplay
+- **Select specific blocks** for targeted strategy
+- **Deploy varying amounts** to maximize winning potential
+- **Track your stats** - total deployed, rounds won, earnings
 
-### 🤖 On-chain Automation (Planned)
-- Stake MOVE tokens for automated deployment
-- Keeper network executes your strategy 24/7
-- Multiple strategies: Random (5 blocks) or All Blocks (25)
-- Top-up stake anytime or disable automation
+### Authentication
+- **Social login** via Privy (Google, Twitter, Discord, GitHub)
+- **Native wallet support** (Nightly, Petra, Martian, Pontem, etc.)
+- **Auto-reconnect** on page refresh
+- **Embedded wallets** created automatically for social login users
 
-### 💰 Flexible Staking (Planned)
-- Stake MORE tokens to earn block-based rewards
-- No lock periods - withdraw anytime
-- Earn MORE rewards for every block
-- Minimum 1 MORE threshold to claim
-- Auto-claim rewards on stake/unstake
+### Real-Time Data
+- **Live blockchain sync** - all data fetched from Movement Network
+- **Round tracking** with current round number and total deployed
+- **Personal statistics** - your deployments and wins
+- **Block heatmap** - visualize competition intensity
+- **Winning indicators** - green highlights for winning blocks
 
-   ### 🔐 Seamless Authentication
-   - **Social login** via Privy (Google, Twitter, Discord, GitHub)
-   - **Embedded wallets** created automatically
-   - **Native wallet support** (Petra, Martian, Pontem, etc.)
-   - No seed phrases required for new users
+## Technical Implementation
 
-### 🔥 Tokenomics (Planned)
-- **MORE Token:** Game token with deflationary mechanics
-- **Buyback & Burn:** Protocol fees continuously reduce supply
-- **Holder Alignment:** Burns benefit all MORE holders
-- **Activity Growth:** More gameplay = more burns
+### Smart Contracts (Live on Testnet)
 
-   ## 🛠️ Tech Stack
+**Contract Address:** `0x41f50ee5eafbf2d4ac7ebf2df582c8aeb5e5a6070bee6cd55b0c09dac189e8d6`
 
-### Smart Contracts (Planned)
-- **Language:** Move 2.0
-- **Network:** Movement Network Testnet (Chain ID: 250)
-- **Status:** Designed and documented, to be developed
-- **Planned Modules:**
-  - `more_token.move` - Fungible asset (MORE token)
-  - `game_state.move` - Core mining game logic with protocol fees
-  - `motherlode.move` - Single jackpot system + grid rewards
-  - `staking.move` - Flexible staking with block-based rewards
-  - `referral.move` - 3-tier referral rewards
-  - `automation.move` - On-chain keeper system
+**Vault Address:** `0xfc7e6f32653414966f60f937f1f7ecf93e0a454b0754929313993956c17c86b1`
 
-   ### Frontend
-   - **Framework:** Next.js 14 (App Router)
-   - **Language:** TypeScript
-   - **Styling:** Tailwind CSS
-   - **Wallet Integration:** Privy + Aptos Wallet Adapter
-   - **Blockchain SDK:** Aptos TS SDK v5.1.5
-   - **UI Components:** Custom components with Lucide icons
-   - **Notifications:** Sonner (toast notifications)
+**Deployed Modules:**
+- `more_token_v3` - MORE fungible asset with 8 decimals
+- `game_state_v3` - Core 5x5 grid game logic with vault system
+- `motherlode_v3` - Jackpot tracking and round results
+- `automation_v3` - Future feature (not active in UI)
 
-## 🚀 Getting Started
+**Key Functions:**
+- `deploy(admin_addr, block_indices, amount_per_block)` - Deploy MOVE to blocks
+- `get_game_state(admin_addr)` - Fetch current round and stats
+- `get_round_status(admin_addr)` - Get countdown timer data
+- `get_block(admin_addr, block_index)` - Get individual block state
+- `balance_of(owner, admin_addr)` - Check MORE token balance
+- `test_faucet(admin_addr)` - Claim 10,000 MORE tokens
 
-> **Note:** This runs the frontend prototype with mock data. For actual on-chain functionality, smart contracts must be deployed first (see deployment section below).
+### Frontend Stack
+- **Framework:** Next.js 14 (App Router) with TypeScript
+- **Styling:** Tailwind CSS with custom design system
+- **Blockchain SDK:** Aptos TS SDK v5.1.5
+- **Wallet Integration:** 
+  - Privy (social login + embedded wallets)
+  - Aptos Wallet Adapter (native wallet support)
+- **UI Components:** Custom components with Lucide icons
+- **Notifications:** Sonner (toast notifications)
+- **State Management:** React hooks with real-time blockchain sync
+
+## Getting Started
 
 ### Prerequisites
 - Node.js 18+ and npm/yarn
 - Git
 
-### Running the Frontend Prototype
+### Installation & Setup
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/akerems/more-m1-hackathon.git
+   git clone https://github.com/akerems/more-m1-hackathon
    cd more-m1-hackathon
    ```
 
@@ -128,9 +127,7 @@
    NEXT_PUBLIC_PRIVY_APP_ID=your_privy_app_id_here
    ```
    
-   > 🔑 Get your Privy App ID from [Privy Dashboard](https://dashboard.privy.io)
-   > 
-   > **Note:** Wallet connections will work, but transactions won't execute until contracts are deployed.
+   > Get your Privy App ID from [Privy Dashboard](https://dashboard.privy.io)
 
 4. **Run the development server**
    ```bash
@@ -140,264 +137,177 @@
 5. **Open your browser**
    
    Navigate to [http://localhost:3000](http://localhost:3000)
+
+6. **Get testnet tokens**
    
-   > You'll see the game interface with **mock data**. All numbers and statistics are placeholders.
+   - **MOVE tokens:** [Movement Faucet](https://faucet.movementnetwork.xyz/)
+   - **MORE tokens:** Use the "Get MORE" button in the app (calls `test_faucet`)
 
-## 📁 Project Structure
+## How to Play
 
-```
-more-m1-hackathon/          # ✅ Frontend prototype (functional, uses mock data)
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx           # Main mining page
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   ├── providers.tsx      # Context providers
-│   ├── stake/             # Staking page
-│   ├── discover/          # Explorer/Stats page
-│   └── about/             # About page
-├── components/             # React components
-│   ├── Header.tsx
-│   ├── MiningGrid.tsx
-│   ├── DeployPanel.tsx
-│   ├── MotherlodeDisplay.tsx
-│   ├── WalletButton.tsx
-│   └── ...
-├── hooks/                  # Custom React hooks
-│   ├── useBalance.ts
-│   └── useAutomation.ts
-├── lib/                    # Utilities and configs
-│   ├── aptos.ts           # Aptos SDK config
-│   ├── privy-config.ts    # Privy wallet config
-│   └── transactions.ts    # Transaction helpers
-├── public/                 # Static assets
-├── package.json            # Dependencies
-├── next.config.js          # Next.js configuration
-├── tailwind.config.ts      # Tailwind CSS config
-└── README.md              # This file
-```
+### Step-by-Step Guide:
 
-> **Note:** This repository contains the frontend application. Move 2.0 smart contracts are documented but not yet published in this repo. They will be added in a future update or separate repository.
+1. **Connect Your Wallet**
+   - Click "Connect Wallet" in the top right
+   - Choose social login (Google, Twitter, etc.) or native wallet
+   - Approve the connection
 
-   ## 🎮 How to Play
+2. **Get Testnet Tokens**
+   - **MOVE:** Click "Get MOVE" → Opens Movement faucet
+   - **MORE:** Click "Get MORE" → Claims 10,000 MORE tokens instantly
 
-   > **Note:** The following describes the intended gameplay mechanics. Current prototype displays mock data - actual on-chain gameplay will be available after smart contract deployment.
+3. **Select Blocks**
+   - Click individual blocks on the 5x5 grid to select them
+   - Use "All" button to select all 25 blocks
+   - Use "Clear" button to deselect
 
-   ### Manual Deployment
+4. **Set Deployment Amount**
+   - Enter amount per block (minimum 1 MOVE)
+   - Use quick add buttons: +100, +10, +1
+   - Total cost shown at bottom
 
-   1. **Connect your wallet** using social login or native wallet
-   2. **Get test MOVE tokens** from the faucet (linked in wallet dropdown)
-   3. **Select blocks** on the 5x5 grid (or use "All" for maximum chances)
-   4. **Set deployment amount** per block
-   5. **Deploy** and wait for the round to complete
-   6. **Win rewards:**
-      - **Grid win** → Earn MOVE tokens
-      - **Motherlode** → Earn MORE tokens (1 in 625 chance!)
+5. **Deploy**
+   - Click "Deploy to X Blocks" button
+   - Approve transaction in your wallet
+   - Wait for confirmation (toast notification)
 
-   ### Auto-Deploy Mode
+6. **Watch the Round**
+   - Monitor countdown timer (60 seconds per round)
+   - See real-time updates as others deploy
+   - Heatmap shows competition intensity
 
-   1. Switch to **Auto** tab in the Deploy Panel
-   2. **Stake MOVE tokens** (minimum 10 MOVE)
-   3. **Choose strategy:**
-      - **Random:** Deploy to 5 random blocks per round
-      - **All Blocks:** Deploy to all 25 blocks per round
-   4. **Enable automation** - Keepers will execute your deployments 24/7
-   5. **Top-up** your stake anytime or disable when done
+7. **Check Results**
+   - When round ends, winning blocks turn green
+   - Check your stats for updated wins/earnings
+   - New round starts automatically
 
-   ### Staking MORE Tokens
+## Reward Calculation
 
-   1. Navigate to the **Stake** page
-   2. **Stake MORE tokens** (any amount, no minimum)
-   3. **Earn rewards** automatically every block:
-      - 0.0001 MORE per block per 1 MORE staked
-      - Rewards accumulate continuously
-   4. **Claim rewards** when you reach 1 MORE minimum
-   5. **Unstake anytime** - no lock periods!
-      - Withdraw all or partial amount
-      - Auto-claims pending rewards
+### How Rewards Work:
 
-   **Example:**
-   - Stake 10,000 MORE
-   - After 100 blocks → Earn 1 MORE (claimable!)
-   - After 1,000 blocks → Earn 10 MORE
-   - Withdraw anytime with no penalties
+Each round, rewards are distributed based on:
+1. Total MOVE deployed by all players
+2. Which blocks win (determined by contract RNG)
+3. Your proportional deployment to winning blocks
 
-   ## 💡 Reward Distribution
+### Example:
 
-   > **⚠️ These are the planned mechanics for when contracts are deployed. Current frontend displays mock values.**
+**Round Setup:**
+- You deploy: 10 MOVE to Block #5
+- Others deploy: 40 MOVE to Block #5
+- Total Block #5: 50 MOVE
 
-   ### Motherlode Win (MORE tokens)
-   - 60% → Motherlode block winners
-   - 20% → All active miners
-   - 15% → Buyback & burn
-   - 5% → Next round rollover
+**Block #5 Wins:**
+- Block #5 reward pool: 50 MOVE × 0.85 = 42.5 MOVE (85% to winners)
+- Your share: (10 / 50) × 42.5 = **8.5 MOVE**
+- Your profit: 8.5 - 10 = **-1.5 MOVE** (you need to win multiple blocks or have higher proportion)
 
-   ### Grid Win (MOVE tokens)
-   - 85% → Winning block miners
-   - 15% → Protocol fee (buyback & burn)
+**Winning Strategy:**
+- Deploy to 5 blocks × 10 MOVE each = 50 MOVE total
+- If 2 blocks win with low competition, you profit!
 
-   ### Buyback & Burn Flow
-   1. Protocol collects fees in MOVE
-   2. Fees used to buy MORE from DEX
-   3. Purchased MORE is burned forever
-   4. Supply decreases, benefiting all holders
+## Known Limitations & Future Features
 
-   ## 💎 Staking System
+### Not Yet Implemented:
 
-   > **⚠️ Prototype Notice:** The staking interface is functional in the UI, but rewards and transactions are simulated with mock data until contracts are deployed.
+1. **Buyback & Burn Mechanism**
+   - Requires DEX and liquidity pool on Movement testnet
+   - Protocol fees accumulate in vault but aren't used for buybacks yet
+   - Will be implemented when Movement DEX launches
 
-   MORE uses a **flexible, block-based staking system** with no lock periods.
+2. **Motherlode Jackpot**
+   - Pool tracking exists but jackpot not triggered
+   - Contract has logic but needs activation
+   - Future update will enable 1-in-625 jackpot wins
 
-   ### How It Works
+3. **Staking System**
+   - Contract module exists but not integrated in UI
+   - Future feature for passive MORE rewards
+   - Will allow flexible staking with no lock periods
 
-   **Stake:**
-   - Deposit any amount of MORE tokens
-   - No minimum, no lock periods
-   - Start earning immediately
+4. **Auto-Deploy/Automation**
+   - **Removed from UI due to bugs** - feature was incomplete and buggy
+   - Could not be completed in hackathon timeframe
+   - Keeper system designed but implementation had issues
+   - Will require significant refactoring before re-adding
+   - Manual deployment works perfectly - use that instead!
 
-   **Earn:**
-   - Rewards accrue every block: **0.0001 MORE per block per 1 MORE staked**
-   - Continuous accumulation based on blocks elapsed
-   - Formula: `rewards = (staked_amount × blocks_elapsed × 0.0001)`
+5. **Referral System**
+   - Designed but not yet deployed
+   - Will offer 3-tier referral rewards
+   - Future social growth feature
 
-   **Claim:**
-   - Minimum threshold: **1 MORE**
-   - Claim anytime once threshold is met
-   - Auto-claim on new stakes or unstakes
+### ✅ Fully Working:
 
-   **Unstake:**
-   - Withdraw full or partial amount anytime
-   - No penalties, no waiting periods
-   - Unclaimed rewards automatically paid out (if ≥ 1 MORE)
+- ✅ **Manual deployment** - Core feature, fully functional and tested
+- ✅ Real-time grid deployment and visualization
+- ✅ 60-second rounds with live countdown
+- ✅ Winning block determination and highlights
+- ✅ Proportional reward distribution
+- ✅ Wallet integration (social + native)
+- ✅ Token faucets (MOVE + MORE)
+- ✅ Player statistics tracking
+- ✅ Blockchain data synchronization
+- ✅ Transaction notifications
+- ✅ Responsive UI/UX
 
-   ### Reward Examples
+> **Note:**
+## 🔒 Security Notes
 
-   | Staked Amount | Blocks Elapsed | Rewards Earned |
-   |---------------|----------------|----------------|
-   | 1,000 MORE | 100 blocks | 0.1 MORE |
-   | 1,000 MORE | 1,000 blocks | 1 MORE ✅ (claimable) |
-   | 10,000 MORE | 100 blocks | 1 MORE ✅ (claimable) |
-   | 10,000 MORE | 1,000 blocks | 10 MORE |
-   | 100,000 MORE | 1,000 blocks | 100 MORE |
+**Important Security Information:**
 
-   ### Why Stake?
+1. **Unaudited Contracts**
+   - Smart contracts have NOT been professionally audited
+   - Use only with testnet tokens
+   - Do NOT deploy to mainnet without audit
 
-   - **Passive Income:** Earn MORE just by holding
-   - **Deflationary Benefit:** As supply burns, your staked MORE becomes more valuable
-   - **Flexible:** No lock-ups, withdraw anytime
-   - **Compounding:** Restake rewards to earn more
-   - **Zero Risk:** Only opportunity cost vs. selling
+2. **Testnet Only**
+   - All tokens are for testing purposes
+   - No real value - can be reset anytime
+   - Do not attempt to use with real funds
 
-   ## 🌐 Movement Network Details
+3. **Experimental Software**
+   - Built for hackathon/educational purposes
+   - May contain bugs or unexpected behavior
+   - No warranties or guarantees provided
 
-   - **Testnet RPC:** `https://testnet.movementnetwork.xyz/v1`
-   - **Chain ID:** 250
-   - **Explorer:** [https://explorer.movementnetwork.xyz](https://explorer.movementnetwork.xyz)
-   - **Faucet:** [https://faucet.movementnetwork.xyz](https://faucet.movementnetwork.xyz)
+4. **Best Practices**
+   - Never share your private keys
+   - Use social login for ease (Privy handles keys)
+   - Test with small amounts first
+   - Report bugs via GitHub Issues
 
-## 📝 Smart Contract Documentation
+## Troubleshooting
 
-> **Current Status:** Smart contracts are designed and documented but **NOT YET INCLUDED** in this repository. The frontend is a prototype showing intended functionality with mock data.
+### Common Issues:
 
-### Planned Move 2.0 Modules:
+**"Wallet won't connect"**
+- Clear browser cache and cookies
+- Try different wallet or social login
+- Check browser console for errors
 
-The following smart contracts will be implemented for the complete on-chain functionality:
+**"Transaction failed"**
+- Ensure sufficient MOVE balance (check gas + deployment)
+- Wait for previous transaction to complete
+- Try refreshing the page
 
-- **`more_token.move`** - MORE fungible asset with mint/burn capabilities
-- **`game_state.move`** - Core 5x5 grid game logic and protocol fees
-- **`motherlode.move`** - Single jackpot system (MORE) + grid rewards (MOVE)
-- **`staking.move`** - Flexible block-based staking with no lock periods
-- **`referral.move`** - 3-tier referral reward system
-- **`automation.move`** - On-chain keeper system for auto-deployment
+**"Balance not updating"**
+- Wait 5-10 seconds for blockchain sync
+- Check transaction on explorer
+- Refresh page if needed
 
-### Future Deployment:
+**"Timer not counting down"**
+- This is normal between rounds
+- New round starts when transactions occur
+- Timer will resume when round is active
 
-Smart contracts will be added to this repository and deployed to Movement Testnet in a future update. Deployment instructions and contract addresses will be provided at that time.
+## Acknowledgments
 
-To track deployment status:
-- Watch this repository for updates
-- Check the Issues section for deployment progress
-- Smart contract code will be added in a `contracts/` or similar directory
+- **Movement Network** for the hackathon opportunity
+- **Privy** for seamless authentication infrastructure
+- **Aptos** for the Move 2.0 language and SDK
+- **Next.js** and **Tailwind CSS** for excellent developer experience
+- All testers and early users for feedback
 
-### Integration Points:
 
-Once deployed, the following files will need contract addresses:
-- `lib/aptos.ts` - Update `CONTRACT_ADDRESS` constant
-- Transaction functions will be activated
-- Real blockchain data will replace mock values
-
-   ## 🔒 Security & Status Notes
-
-⚠️ **Current Project Status:**
-- **Frontend Only:** This is currently a UI/UX prototype
-- **Mock Data:** All displayed numbers, stats, and activities are placeholder values
-- **No Blockchain Integration:** Smart contracts are designed but not yet developed or deployed
-- **Wallet Functionality:** Connections work but transactions are simulated
-
-   ⚠️ **Once Deployed (Future):**
-   - Smart contracts will be **NOT audited** initially
-   - Use only with **testnet tokens**
-   - Do **NOT** use in production without thorough testing
-   - No guarantees of security or correctness
-
-   ## 🤝 Contributing
-
-   This is a hackathon project and may not be actively maintained. However, feel free to:
-   - Report issues
-   - Submit pull requests
-   - Fork and build your own version
-
-   ## 📄 License
-
-   MIT License - see LICENSE file for details
-
-   ## 🙏 Acknowledgments
-
-   - Built for Movement Network Hackathon
-   - Inspired by on-chain gaming mechanics
-   - Powered by Move 2.0 and Privy authentication
-
-   ## 📧 Contact
-
-   For questions or feedback, open an issue on GitHub.
-
-   ---
-
-   ## 📊 Current State vs. Future State
-
-### ✅ **Currently Available:**
-- Complete frontend UI/UX prototype
-- Wallet connection infrastructure (Privy + Native wallets)
-- All game screens and interfaces
-- Mock data visualization
-- Responsive design and animations
-- Documentation of Move 2.0 smart contract design
-
-### 🚧 **To Be Implemented:**
-- Move 2.0 smart contract development and code publication
-- Smart contract deployment to Movement Testnet
-- Real blockchain data integration
-- Actual token transactions (MOVE/MORE)
-- Live game rounds and mining
-- Real-time Motherlode jackpot tracking
-- Functional staking with on-chain rewards
-- Buyback & burn execution
-- Protocol analytics from chain data
-
-### 🎯 **Roadmap:**
-1. **Phase 1** (Current): Frontend prototype ✅
-2. **Phase 2** (Next): Develop and publish Move 2.0 smart contracts
-3. **Phase 3**: Deploy contracts to Movement Testnet
-4. **Phase 4**: Integrate frontend with deployed contracts
-5. **Phase 5**: Test with real testnet tokens
-6. **Phase 6**: Security audit (if moving to mainnet)
-7. **Phase 7**: Mainnet deployment (if applicable)
-
-   ---
-
-   **⚠️ Disclaimer:** This is experimental software built for educational and hackathon purposes. The current version is a **frontend prototype with mock data**. Use at your own risk once deployed. No warranties provided.
-
-   **💡 Key Innovations (When Fully Implemented):**
-   1. **Buyback & Burn:** Protocol fees continuously buyback and burn MORE tokens, creating deflationary pressure that directly benefits all holders as gameplay increases.
-   2. **Flexible Staking:** Block-based rewards with no lock periods - stake and unstake anytime while earning continuous passive income.
-   3. **Dual Reward System:** Win MOVE from grid play, earn MORE from Motherlode jackpots, and stake MORE for passive rewards - three ways to accumulate value.
-
+**Final Disclaimer:** This is experimental software built for educational and hackathon purposes. Smart contracts are **not audited**. Use only with testnet tokens at your own risk. No warranties provided.
