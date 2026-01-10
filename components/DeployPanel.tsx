@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
-import { Coins, Zap, Info, Bot, AlertCircle, Plus, Power } from "lucide-react";
+import { useState, memo, useCallback, useMemo } from "react";
+import { Coins, Zap, Info, Bot, AlertCircle, Plus, Power, Droplets, CheckCircle, ExternalLink } from "lucide-react";
 import clsx from "clsx";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useSignRawHash } from "@privy-io/react-auth/extended-chains";
 import { getMovementWallet } from "@/lib/privy-movement";
 import { useAutomation } from "@/hooks/useAutomation";
+import { useMOREBalance } from "@/hooks/useMOREBalance";
+import { useBalance } from "@/hooks/useBalance";
 import {
   enableAutomation,
   enableAutomationNative,
@@ -15,7 +17,9 @@ import {
   disableAutomationNative,
   addAutomationStake,
   AutomationStrategy,
+  deployToBlocks,
 } from "@/lib/transactions";
+import { CONTRACT_ADDRESS, MODULES, getTxExplorerUrl } from "@/lib/aptos";
 import { toast } from "sonner";
 
 interface DeployPanelProps {
@@ -23,13 +27,15 @@ interface DeployPanelProps {
   onClearSelection: () => void;
   onSelectAll: () => void;
   onSmartSelect: () => void;
+  onDeploySuccess?: () => void;
 }
 
-export default function DeployPanel({
+function DeployPanel({
   selectedBlocks,
   onClearSelection,
   onSelectAll,
   onSmartSelect,
+  onDeploySuccess,
 }: DeployPanelProps) {
   const [amount, setAmount] = useState(1.0);
   const [isManual, setIsManual] = useState(true);
@@ -47,16 +53,87 @@ export default function DeployPanel({
   const { signRawHash } = useSignRawHash();
   const privyWallet = getMovementWallet(user);
 
+  // Native wallet address is already a string
+  // Privy wallet address is now normalized by getMovementWallet
   const currentWalletAddress = account?.address || privyWallet?.address;
+  
+  console.log('🔍 DeployPanel Wallet Address:', {
+    nativeAddress: account?.address,
+    privyAddress: privyWallet?.address,
+    currentWalletAddress,
+    addressType: typeof currentWalletAddress
+  });
   const { config, loading, refetch } = useAutomation(
     currentWalletAddress ? String(currentWalletAddress) : undefined
   );
+  
+  // Get balances
+  const { balance: moreBalance, refetch: refetchMore } = useMOREBalance(
+    currentWalletAddress ? String(currentWalletAddress) : undefined
+  );
+  const { balance: moveBalance, refetch: refetchMove } = useBalance(
+    currentWalletAddress ? String(currentWalletAddress) : undefined
+  );
 
-  const totalCost = amount * selectedBlocks.length;
+  // Debug: Log balances whenever they change
+  console.log("🎯 DeployPanel Balances:", {
+    walletAddress: currentWalletAddress,
+    moreBalance: moreBalance,
+    moreBalanceType: typeof moreBalance,
+    moveBalance: moveBalance,
+    moveBalanceType: typeof moveBalance,
+  });
 
-  const incrementAmount = (value: number) => {
-    setAmount((prev) => Math.max(0, prev + value));
+  const totalCost = useMemo(() => amount * selectedBlocks.length, [amount, selectedBlocks.length]);
+  
+  // Handle test faucet
+  const handleTestFaucet = async () => {
+    if (!currentWalletAddress) {
+      toast.error("Please connect your wallet first");
+      return;
+    }
+
+    try {
+      if (account && signAndSubmitTransaction) {
+        const response = await signAndSubmitTransaction({
+          data: {
+            function: `${MODULES.MORE_TOKEN}::test_faucet` as `${string}::${string}::${string}`,
+            typeArguments: [],
+            functionArguments: [CONTRACT_ADDRESS],
+          },
+        });
+        
+        const explorerUrl = getTxExplorerUrl(response.hash);
+        toast.success("Claimed 10,000 MORE tokens!", {
+          icon: <CheckCircle className="w-5 h-5 text-green-500" />,
+          description: (
+            <a 
+              href={explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-accent-yellow hover:underline"
+            >
+              View in Explorer
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          ),
+        });
+        
+        setTimeout(() => refetchMore(), 1500);
+      } else {
+        toast.error("Native wallet required for faucet");
+      }
+    } catch (error: any) {
+      console.error("Faucet error:", error);
+      toast.error("Failed to claim tokens", {
+        description: error.message || "Please try again",
+      });
+    }
   };
+
+  const incrementAmount = useCallback((value: number) => {
+    setAmount((prev) => Math.max(0, prev + value));
+  }, []);
 
   const handleEnableAutomation = async () => {
     if (!currentWalletAddress) {
@@ -96,8 +173,23 @@ export default function DeployPanel({
         throw new Error("No wallet available");
       }
 
+      const explorerUrl = getTxExplorerUrl(txHash);
       toast.success("Automation enabled successfully!", {
-        description: `Staked ${stakeAmount} MOVE`,
+        icon: <CheckCircle className="w-5 h-5 text-green-500" />,
+        description: (
+          <div className="space-y-1">
+            <span>Staked {stakeAmount} MOVE</span>
+            <a 
+              href={explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-accent-yellow hover:underline text-sm"
+            >
+              View in Explorer
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        ),
       });
 
       setTimeout(() => refetch(), 2000);
@@ -131,8 +223,23 @@ export default function DeployPanel({
         throw new Error("No wallet available");
       }
 
+      const explorerUrl = getTxExplorerUrl(txHash);
       toast.success("Automation disabled", {
-        description: `Refunded ${config?.stakedBalance || 0} MOVE`,
+        icon: <CheckCircle className="w-5 h-5 text-green-500" />,
+        description: (
+          <div className="space-y-1">
+            <span>Refunded {config?.stakedBalance || 0} MOVE</span>
+            <a 
+              href={explorerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-accent-yellow hover:underline text-sm"
+            >
+              View in Explorer
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        ),
       });
 
       setTimeout(() => refetch(), 2000);
@@ -170,23 +277,116 @@ export default function DeployPanel({
     }
   };
 
+  // Handle deploy
+  const handleDeploy = async () => {
+    if (!currentWalletAddress || selectedBlocks.length === 0) {
+      toast.error("Please select blocks and connect wallet");
+      return;
+    }
+
+    // Calculate total cost
+    const totalCost = amount * selectedBlocks.length;
+    const userMoveBalance = parseFloat(moveBalance || "0");
+
+    console.log('💰 Deploy Balance Check:', {
+      moveBalance: moveBalance,
+      parsed: userMoveBalance,
+      totalCost: totalCost,
+      amount: amount,
+      blocks: selectedBlocks.length,
+      hasEnough: userMoveBalance >= totalCost
+    });
+
+    // Check if user has enough MOVE
+    if (userMoveBalance < totalCost) {
+      toast.error("Insufficient APT balance", {
+        description: `Need ${totalCost.toFixed(4)} APT, but you have ${userMoveBalance.toFixed(4)} APT`,
+      });
+      return;
+    }
+
+    try {
+      if (account && signAndSubmitTransaction) {
+        const payload = await deployToBlocks(selectedBlocks, amount);
+        const response = await signAndSubmitTransaction(payload);
+        
+        const explorerUrl = getTxExplorerUrl(response.hash);
+        toast.success("Deployment successful!", {
+          icon: <CheckCircle className="w-5 h-5 text-green-500" />,
+          description: (
+            <div className="space-y-1">
+              <span>Deployed {amount} MOVE to {selectedBlocks.length} blocks</span>
+              <a 
+                href={explorerUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-accent-yellow hover:underline text-sm"
+              >
+                View in Explorer
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          ),
+        });
+        
+        onClearSelection();
+        
+        // Refetch balances and stats after successful deployment
+        setTimeout(() => {
+          refetchMore();
+          refetchMove();
+          onDeploySuccess?.();
+        }, 1500);
+      } else {
+        toast.error("Native wallet required for deployment");
+      }
+    } catch (error: any) {
+      console.error("Deploy error:", error);
+      toast.error("Deployment failed", {
+        description: error.message || "Please try again",
+      });
+    }
+  };
+
   // Common stats component
   const StatsDisplay = () => (
-    <div className="grid grid-cols-2 gap-2">
-      <div className="bg-card/50 rounded-lg p-2 border border-border">
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <Coins className="w-3.5 h-3.5 text-accent-yellow" />
-          <span className="text-[10px] text-gray-400">Total deployed</span>
-        </div>
-        <div className="text-base font-bold text-white">3.8448</div>
+    <div className="space-y-2">
+      {/* Faucet Buttons */}
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          onClick={handleTestFaucet}
+          className="py-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1"
+        >
+          <Droplets className="w-3.5 h-3.5" />
+          Get MORE
+        </button>
+        <a
+          href="https://faucet.movementnetwork.xyz/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="py-2 bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1"
+        >
+          <Droplets className="w-3.5 h-3.5" />
+          Get MOVE
+        </a>
       </div>
-
-      <div className="bg-card/50 rounded-lg p-2 border border-border">
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <Coins className="w-3.5 h-3.5 text-accent-yellow" />
-          <span className="text-[10px] text-gray-400">You deployed</span>
+      
+      <div className="grid grid-cols-2 gap-2">
+        <div className="bg-card/50 rounded-lg p-2 border border-border">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <Coins className="w-3.5 h-3.5 text-accent-yellow" />
+            <span className="text-[10px] text-gray-400">MORE Balance</span>
+          </div>
+          <div className="text-base font-bold text-white">{loading ? "..." : moreBalance.toFixed(2)}</div>
         </div>
-        <div className="text-base font-bold text-accent-yellow">0.0000</div>
+
+        <div className="bg-card/50 rounded-lg p-2 border border-border">
+          <div className="flex items-center gap-1.5 mb-0.5">
+            <Coins className="w-3.5 h-3.5 text-accent-yellow" />
+            <span className="text-[10px] text-gray-400">MOVE Balance</span>
+          </div>
+          <div className="text-base font-bold text-accent-yellow">{moveBalance ? Number(moveBalance).toFixed(2) : "0.00"}</div>
+        </div>
       </div>
     </div>
   );
@@ -522,6 +722,7 @@ export default function DeployPanel({
 
         {/* Deploy Button */}
         <button
+          onClick={handleDeploy}
           disabled={selectedBlocks.length === 0}
           className={clsx(
             "w-full py-2 rounded-lg font-bold text-xs transition-all flex items-center justify-center gap-1.5",
@@ -549,3 +750,5 @@ export default function DeployPanel({
     </div>
   );
 }
+
+export default memo(DeployPanel);

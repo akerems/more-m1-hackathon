@@ -1,24 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { memo } from "react";
 import { Coins, Zap } from "lucide-react";
+import { useMotherlode } from "@/hooks/useMotherlode";
 
-export default function MotherlodeDisplay() {
-  const [timeRemaining, setTimeRemaining] = useState(59);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeRemaining((prev) => (prev > 0 ? prev - 1 : 59));
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-  };
+function MotherlodeDisplay() {
+  const { pool, loading } = useMotherlode();
 
   return (
     <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-card via-card to-accent-yellow/10 border border-border p-3">
@@ -31,24 +18,14 @@ export default function MotherlodeDisplay() {
       {/* Content */}
       <div className="relative space-y-2.5">
         {/* Motherlode header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="relative">
-              <Zap className="w-5 h-5 text-accent-yellow animate-pulse" />
-              <div className="absolute inset-0 bg-accent-yellow/20 rounded-full blur-xl" />
-            </div>
-            <div>
-              <div className="text-xs text-gray-400">Motherlode</div>
-              <div className="text-[10px] text-gray-500">1 in 625 chance</div>
-            </div>
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Zap className="w-5 h-5 text-accent-yellow animate-pulse" />
+            <div className="absolute inset-0 bg-accent-yellow/20 rounded-full blur-xl" />
           </div>
-
-          {/* Timer */}
-          <div className="text-right">
-            <div className="text-lg font-bold text-accent-yellow glow-effect">
-              {formatTime(timeRemaining)}
-            </div>
-            <div className="text-[10px] text-gray-400">Time remaining</div>
+          <div>
+            <div className="text-xs text-gray-400">Motherlode</div>
+            <div className="text-[10px] text-gray-500">1 in 625 chance</div>
           </div>
         </div>
 
@@ -60,7 +37,9 @@ export default function MotherlodeDisplay() {
               <span className="text-xs text-gray-400">Motherlode Jackpot</span>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-bold text-accent-yellow glow-effect">2,686</div>
+              <div className="text-2xl font-bold text-accent-yellow glow-effect">
+                {loading ? "..." : pool.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+              </div>
               <div className="text-[10px] text-accent-yellow/60">MORE</div>
             </div>
           </div>
@@ -69,11 +48,13 @@ export default function MotherlodeDisplay() {
         {/* Info Text */}
         <div className="flex items-center justify-center gap-2 text-[10px] text-gray-500">
           <div className="w-1 h-1 bg-accent-yellow rounded-full"></div>
-          <span>Win Motherlode = MORE • Win Grid = MOVE</span>
+          <span>70% payout • 30% rollover to next round</span>
           <div className="w-1 h-1 bg-accent-yellow rounded-full"></div>
         </div>
       </div>
     </div>
   );
 }
+
+export default memo(MotherlodeDisplay);
 
