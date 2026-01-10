@@ -20,9 +20,10 @@ export function WalletProvider({ children }: WalletProviderProps) {
   return (
     <AptosWalletAdapterProvider
       autoConnect={true}
+      deferLoading={false} // Load immediately, don't defer
       dappConfig={aptosConfig}
       onError={(error) => {
-        console.error("Wallet error:", error);
+        console.error("❌ Wallet error:", error);
       }}
     >
       {children}

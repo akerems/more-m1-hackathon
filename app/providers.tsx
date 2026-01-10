@@ -26,9 +26,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
           },
           // Login methods - email and social logins enabled
           loginMethods: ['email', 'google', 'twitter', 'discord', 'github'],
-          embeddedWallets: {
-            createOnLogin: 'users-without-wallets',
-          },
         }}
       >
         <AutoWalletCreator />

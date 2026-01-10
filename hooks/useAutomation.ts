@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { getAutomationConfig, estimateRoundsRemaining } from "@/lib/transactions";
 
 export interface AutomationConfig {
@@ -17,8 +17,9 @@ export function useAutomation(userAddress: string | undefined) {
   const [config, setConfig] = useState<AutomationConfig | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isMountedRef = useRef(true);
 
-  const fetchAutomationConfig = async () => {
+  const fetchAutomationConfig = useCallback(async () => {
     if (!userAddress) {
       setConfig(null);
       return;
@@ -33,31 +34,41 @@ export function useAutomation(userAddress: string | undefined) {
         estimateRoundsRemaining(userAddress),
       ]);
 
-      if (automationConfig) {
-        setConfig({
-          ...automationConfig,
-          estimatedRounds: roundsRemaining,
-        });
-      } else {
-        setConfig(null);
+      if (isMountedRef.current) {
+        if (automationConfig) {
+          setConfig({
+            ...automationConfig,
+            estimatedRounds: roundsRemaining,
+          });
+        } else {
+          setConfig(null);
+        }
       }
     } catch (err) {
-      console.error("Error fetching automation config:", err);
-      setError("Failed to fetch automation config");
-      setConfig(null);
+      if (isMountedRef.current) {
+        console.error("Error fetching automation config:", err);
+        setError("Failed to fetch automation config");
+        setConfig(null);
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) {
+        setLoading(false);
+      }
     }
-  };
+  }, [userAddress]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     fetchAutomationConfig();
 
-    // Refresh every 10 seconds
-    const interval = setInterval(fetchAutomationConfig, 10000);
+    // Refresh every 15 seconds (increased from 10 for better performance)
+    const interval = setInterval(fetchAutomationConfig, 15000);
 
-    return () => clearInterval(interval);
-  }, [userAddress]);
+    return () => {
+      isMountedRef.current = false;
+      clearInterval(interval);
+    };
+  }, [fetchAutomationConfig]);
 
   return { config, loading, error, refetch: fetchAutomationConfig };
 }

@@ -1,15 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo, useCallback, useEffect } from "react";
 import { usePrivy, useLogout } from "@privy-io/react-auth";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Wallet, Copy, ExternalLink, LogOut, Droplets, Check } from "lucide-react";
-import { WalletSelectionModal } from "./WalletSelectionModal";
+import dynamic from "next/dynamic";
 import { getMovementWallet } from "@/lib/privy-movement";
 import { getAccountExplorerUrl, FAUCET_URL } from "@/lib/aptos";
 import { toast } from "sonner";
 
-export default function WalletButton() {
+// Lazy load wallet modal
+const WalletSelectionModal = dynamic(() => 
+  import("./WalletSelectionModal").then(mod => ({ default: mod.WalletSelectionModal })),
+  { ssr: false }
+);
+
+function WalletButton() {
   const [showModal, setShowModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -20,10 +26,28 @@ export default function WalletButton() {
 
   // Get wallet address (prioritize native wallet, then Privy)
   const movementWallet = getMovementWallet(user);
-  const rawAddress = account?.address || movementWallet?.address;
   
-  // Ensure address is a string
-  const address = rawAddress ? (typeof rawAddress === 'string' ? rawAddress : String(rawAddress)) : undefined;
+  // Native wallet address is already a string
+  // Privy wallet address is now normalized by getMovementWallet
+  const address = account?.address || movementWallet?.address;
+  
+  // 🔄 Log wallet connection state for debugging
+  useEffect(() => {
+    if (account?.address) {
+      console.log('✅ Wallet auto-connected:', {
+        address: account.address,
+        wallet: account.ansName || 'Unknown'
+      });
+    }
+  }, [account]);
+  
+  console.log('🔍 WalletButton State:', {
+    ready,
+    authenticated,
+    nativeAddress: account?.address,
+    privyAddress: movementWallet?.address,
+    finalAddress: address,
+  });
 
   // Format address for display
   const formatAddress = (addr: string | undefined) => {
@@ -33,7 +57,7 @@ export default function WalletButton() {
   };
 
   // Copy address to clipboard
-  const copyAddress = async () => {
+  const copyAddress = useCallback(async () => {
     if (address) {
       const addrStr = typeof address === 'string' ? address : String(address);
       await navigator.clipboard.writeText(addrStr);
@@ -41,10 +65,10 @@ export default function WalletButton() {
       toast.success("Address copied to clipboard!");
       setTimeout(() => setCopied(false), 2000);
     }
-  };
+  }, [address]);
 
   // Handle disconnect
-  const handleDisconnect = async () => {
+  const handleDisconnect = useCallback(async () => {
     try {
       if (account) {
         await disconnect();
@@ -56,7 +80,7 @@ export default function WalletButton() {
     } catch (error) {
       console.error("Disconnect error:", error);
     }
-  };
+  }, [account, authenticated, disconnect, privyLogout]);
 
   // Loading state
   if (!ready) {
@@ -210,3 +234,5 @@ export default function WalletButton() {
     </div>
   );
 }
+
+export default memo(WalletButton);
