@@ -1,4 +1,4 @@
-# 🎮 MORE - Decentralized Mining Game
+# MORE - Decentralized Mining Game
 
 ![Movement Network](https://img.shields.io/badge/Movement-Network-FDB71A?style=for-the-badge)
 ![Move 2.0](https://img.shields.io/badge/Move-2.0-orange?style=for-the-badge)
@@ -20,22 +20,22 @@
 > - Some features may be experimental or incomplete
 > - Testnet may be reset periodically
 >
-> **✅ What Works:** Manual deployment, grid competition, reward distribution, wallet integration
+> **What Works:** Manual deployment, grid competition, reward distribution, wallet integration
 
 MORE is a live on-chain mining game built on Movement Network. Players compete on a 5x5 grid by deploying MOVE tokens to win rewards. The game combines strategic block selection with provably fair randomness to create an engaging competitive experience.
 
-## 🎯 Core Concept
+## Core Concept
 
 Deploy MOVE tokens to blocks on a 5x5 grid (25 blocks total). At the end of each 60-second round, the smart contract determines winning blocks, and players who deployed to those blocks share the rewards proportionally.
 
-### 🎲 How It Works:
+### How It Works:
 
 1. **Deploy to Blocks** → Choose 1-25 blocks and deploy MOVE tokens
 2. **Wait for Round End** → 60-second rounds with live countdown
 3. **Win Rewards** → Winning blocks split the reward pool
 4. **Repeat** → New round starts automatically
 
-### 💰 Reward Distribution (Per Round):
+### Reward Distribution (Per Round):
 - **85%** → Winning block miners (proportional to deployment)
 - **10%** → Vault (protocol treasury)
 - **5%** → Motherlode pool (future feature)
